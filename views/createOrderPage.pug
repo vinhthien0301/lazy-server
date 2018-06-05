@@ -1,0 +1,210 @@
+extends layout
+block css
+    link(rel="stylesheet" href="assets/app/vendor/select2/select2.css")
+    link(rel="stylesheet" href="assets/app/vendor/jquery-datatables-bs3/assets/css/datatables.css")
+    link(rel="stylesheet" href="assets/app/vendor/pnotify/pnotify.custom.css")
+    link(rel="stylesheet" href="assets/app/css/utility.css")
+block info
+    style(type='text/css').
+        .logo {
+            width: 150px;
+            height: 110px;
+        }
+        .hide {
+            visibility: hidden;
+        }
+
+
+    script.
+        var email = "!{email}"
+        var order_id = "!{order_id}"
+        var page_name = "";
+
+        function change_bank(name) {
+            var label = document.getElementById("bank_name");
+            label.innerText = name;
+        }
+        function processing_order() {
+            $.ajax({
+                url: "/createOrder/processing_order",
+                type: "post", //send it through get method
+                data: {
+                    data: JSON.stringify({
+                        order_id: order_id
+                    })
+                },
+                success: function (response) {
+                    //Do Something
+                    if (response.response_code == "ERRO_NOT_FOUND") {
+                        alert(response.description);
+                    } else {
+
+                        new PNotify({
+                            title: token,
+                            text: 'Đã tạo chuyển khoản thanh toán.',
+                            type: 'success'
+                        });
+                    }
+
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                    alert("lỗi");
+
+                }
+            });
+        }
+
+        function cancel_order() {
+            $.ajax({
+                url: "/createOrder/cancel_order",
+                type: "post", //send it through get method
+                data: {
+                    data: JSON.stringify({
+                        order_id: order_id
+                    })
+                },
+                success: function (response) {
+                    //Do Something
+                    if (response.response_code == "ERRO_NOT_FOUND") {
+                        alert(response.description);
+                    } else {
+
+                        new PNotify({
+                            title: token,
+                            text: 'Đã xóa chuyển khoản .',
+                            type: 'success'
+                        });
+                    }
+
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                    alert("lỗi");
+
+                }
+            });
+        }
+block header
+    header.page-header
+        h2 Thanh toán
+        div(class="right-wrapper pull-right")
+            ol.breadcrumbs
+                li
+                    a(href="dashboard")
+                        i(class="fa fa-home")
+
+            a(class="sidebar-right-toggle" data-open="sidebar-right")
+                i(class="fa fa-chevron-left")
+
+block content
+
+
+    script.
+        var token = "!{token}"
+        var SUCC_EXEC = "SUCC_EXEC";
+
+
+    // start: page
+    .row
+        .col-xs-12
+            section#w4.panel.form-wizard
+                header.panel-heading
+                    .panel-actions
+                        a.panel-action.panel-action-toggle(href='#', data-panel-toggle='')
+                        a.panel-action.panel-action-dismiss(href='#', data-panel-dismiss='')
+                    h2.panel-title Hướng dẫn thanh toán
+                .panel-body
+                    .wizard-progress.wizard-progress-lg
+                        .steps-progress
+                            .progress-indicator
+                        ul.wizard-steps
+                            li.active
+                                a(href='#w4-account', data-toggle='tab')
+                                    span 1
+                                    | Chọn ngân hàng
+                            li
+                                a(href='#w4-profile', data-toggle='tab')
+                                    span 2
+                                    | Xác nhận thông tin
+                            li
+                                a(href='#w4-billing', data-toggle='tab')
+                                    span 3
+                                    | Hoàn tất
+
+                    .alert.alert-danger.hide#error
+                        button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                        |                                        Chưa chọn ngân hàng
+
+
+                    form.form-horizontal(novalidate='novalidate')
+                        .tab-content
+                            #w4-account.tab-pane.active
+                                .form-group
+                                    label.col-sm-3.control-label(for='w4-username') Danh sách ngân hàng
+                                    .col-sm-9
+                                        each item in data
+                                            .radio
+                                                label
+                                                    input(type='radio' , class="bank_check",onclick='change_bank("'+item.name+'")' , value=item, required)
+                                                    img.logo(src=item.url)
+                                                    |    Ngân hàng #{item.name}
+
+                            #w4-profile.tab-pane
+                                .form-group
+                                    label.col-sm-3.control-label() Chủ Tài Khoản
+                                    .col-sm-9
+                                        label.col-sm-3.control-label() Âu Vĩnh Thiện
+                                .form-group
+                                    label.col-sm-3.control-label() Số Tài Khoản
+                                    .col-sm-9
+                                        label.col-sm-3.control-label() 1234567890
+                                .form-group
+                                    label.col-sm-3.control-label() Số Điện Thoại
+                                    .col-sm-9
+                                        label.col-sm-3.control-label() 1234567890
+                                .form-group
+                                    label.col-sm-3.control-label() Khách hàng
+                                    .col-sm-9
+                                        label.col-sm-3.control-label() abc@gmail.com
+                                .form-group
+                                    label.col-sm-3.control-label() Số Tiền chuyển khoản
+                                    .col-sm-9
+                                        label.col-sm-3.control-label() 2.000.000 VNĐ
+                                .form-group
+                                    label.col-sm-3.control-label() Ngân hàng
+                                    .col-sm-9
+                                        label#bank_name.col-sm-3.control-label() #{name}
+
+                                .form-group
+                                    .col-sm-9
+                                        button(type="button" onclick="processing_order()" class="mb-xs mt-xs mr-xs btn btn-primary") Đã chuyển khoản
+                                        button(type="button" onclick="cancel_order()" class="mb-xs mt-xs mr-xs btn btn-danger") Hủy bỏ
+                            #w4-billing.tab-pane
+                                .form-group
+                                    label.col-sm-9.control-label(for='w4-cc') Quá trình thanh toán đã hoàn tất. Chúng tôi sẽ xử lý chuyển khoản trong vòng 24h
+
+                .panel-footer
+                    ul.pager
+                        li.previous.disabled
+                            a
+                                i.fa.fa-angle-left
+                                |  Previous
+                        li.finish.hidden.pull-right
+                            a Finish
+                        li.next
+                            a
+                                | Next
+                                i.fa.fa-angle-right
+
+block JS
+    script(src="assets/app/vendor/select2/select2.js")
+    script(src="assets/app/vendor/jquery-datatables/media/js/jquery.dataTables.js")
+    script(src="assets/app/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js")
+    script(src="assets/app/vendor/jquery-datatables-bs3/assets/js/datatables.js")
+
+    script(src="js/createOrder.validate.js")
+    script(src="assets/app/vendor/bootstrap-wizard/jquery.bootstrap.wizard.js")
+    script(src="assets/app/vendor/pnotify/pnotify.custom.js")
+    script(src="js/rigConfigPage.js")
+    script(src="js/createOrderPage.js")

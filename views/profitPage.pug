@@ -1,0 +1,42 @@
+extends layout
+block css
+    link(rel="stylesheet" href="assets/app/vendor/select2/select2.css")
+    link(rel="stylesheet" href="assets/app/vendor/jquery-datatables-bs3/assets/css/datatables.css")
+    link(rel="stylesheet" href="assets/app/vendor/pnotify/pnotify.custom.css")
+    link(rel="stylesheet" href="assets/app/css/utility.css")
+block info
+    script.
+        var email = "!{email}";
+        var page_name = "profit_page"
+
+block header
+    header.page-header
+        h2 Tính toán lợi nhuận
+        div(class="right-wrapper pull-right")
+            ol.breadcrumbs
+                li
+                    a(href="dashboard")
+                        i(class="fa fa-home")
+                li
+                    span Tính toán lợi nhuận
+
+            a(class="sidebar-right-toggle" data-open="sidebar-right")
+                i(class="fa fa-chevron-left")
+
+block content
+
+
+    script.
+
+    // start: page
+    h3.mt-none Chưa hoàn thành
+    p.mb-lg Chúng tôi đang phát triển trang này....
+
+
+block JS
+    script(src="assets/app/vendor/select2/select2.js")
+    script(src="assets/app/vendor/jquery-datatables/media/js/jquery.dataTables.js")
+    script(src="assets/app/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js")
+    script(src="assets/app/vendor/jquery-datatables-bs3/assets/js/datatables.js")
+
+    script(src="assets/app/vendor/pnotify/pnotify.custom.js")

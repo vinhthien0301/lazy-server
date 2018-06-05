@@ -1,0 +1,104 @@
+div.inner-wrapper
+    // start: sidebar
+    aside(id="sidebar-left" class="sidebar-left")
+        div.sidebar-header
+            div.sidebar-title Điều hướng
+            div(class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle")
+                i(class="fa fa-bars" aria-label="Toggle sidebar")
+        div.nano
+            div.nano-content
+                nav(id="menu" class="nav-main" role="navigation")
+                    ul(class='nav nav-main' id="left-menu")
+                        li#dashboard_page
+                            a(href='dashboard')
+                                i(class="fa fa-home" aria-hidden="true")
+                                span Tổng quan
+                        li.nav-parent#eventManagement_page
+                            a(href='eventManagement')
+                                i(class="fa fa-heartbeat" aria-hidden="true")
+                                span Quản lý sự cố
+                        if is_admin
+                            li.nav-parent#backend_page
+                                a
+                                    i(class="fa fa-refresh" aria-hidden="true")
+                                    span Backend
+                                ul(class="nav nav-children")
+                                    li.nav-parent#desktop_update_page
+                                        a(href='desktopUpdates')
+                                            i(class="fa fa-refresh" aria-hidden="true")
+                                            span Desktop update
+                                    li#user_management(class="nav-parent")
+                                        a Quản lý user
+                                        ul(class="nav nav-children")
+                                            li#user_management_desktop
+                                                a(href="userManagementDesktop") Quản lý user desktop
+                                            li#user_management_web
+                                                a(href="userManagementWeb") Quản lý user web
+                                            li#user_management_mobile
+                                                a(href="userManagementMobile") Quản lý user mobile
+                                    li.nav-parent#order_management_page
+                                        a(href='orderManagement')
+                                            i(class="fa fa-refresh" aria-hidden="true")
+                                            span Quản lý hóa đơn
+
+                        li.nav-parent#config_page
+                            a
+                                i(class="fa fa-desktop" aria-hidden="true")
+                                span Cấu hình máy đào
+                            ul(class='nav nav-children')
+                                li
+                                    span(class="pull-right label label-primary" id="count_number_span") 0 máy hoạt động
+                                    a(href="rigConfig") Danh sách máy đào
+                        li.nav-parent#profit_page
+                            a(href='profit')
+                                i(class="fa fa-money" aria-hidden="true")
+                                span Tính toán lợi nhuận
+
+                        li.nav-parent
+                            a(href='../' target="_blank")
+                                i(class="fa fa-external-link" aria-hidden="true")
+                                span Quay về trang chủ
+
+                        //li
+                        //    a(href='mailbox-folder.html')
+                        //        span(class="pull-right label label-primary") 182
+                        //        i(class="fa fa-envelope" aria-hidden="true")
+                        //        span Mailbox
+
+                hr.separator
+                div(class='sidebar-widget widget-tasks')
+                    div.widget-header
+                        h6 Các thuật toán
+                        div.widget-toggle +
+                    div.widget-content
+                        ul(class='list-unstyled m-none')
+                            li
+                                a(href='#') Ethash
+                            li
+                                a(href='#') CryptoNight
+                            li
+                                a(href='#') Equihash
+
+                hr.separator
+                div(class='sidebar-widget widget-stats')
+                    div.widget-header
+                        h6 Tình trạng các máy đào
+                        div.widget-toggle +
+                    div.widget-content
+                        ul
+                            li
+                                span.stats-title Số máy đang hoạt động
+                                span.stats-complete 85%
+                                div.progress
+                                    div(class="progress-bar progress-bar-primary progress-without-number" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 85%;")
+                                        span.sr-only 85% Complete
+                            li
+                                span.stats-title Số máy trục trặc thường xuyên (trên 5 lần 1 ngày)
+                                span.stats-complete 10%
+                                div.progress
+                                    div(class="progress-bar progress-bar-primary progress-without-number" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;")
+                                        span.sr-only 10% Complete
+    // end: sidebar
+    section(role="main" class="content-body")
+        block header
+        block content

@@ -1,0 +1,129 @@
+extends layout
+block css
+    link(rel="stylesheet" href="assets/app/vendor/select2/select2.css")
+    link(rel="stylesheet" href="assets/app/vendor/jquery-datatables-bs3/assets/css/datatables.css")
+    link(rel="stylesheet" href="assets/app/vendor/pnotify/pnotify.custom.css")
+    link(rel="stylesheet" href="assets/app/css/utility.css")
+block info
+    script.
+        var email = "!{email}"
+        var page_name = "backend_page";
+        var page_child_name = "user_mange_desktop_page";
+        var token = null;
+        var row_id = null;
+        function ask(tk, id) {
+            token = tk;
+            row_id = id;
+            $("#a").click();
+
+        }
+
+        function delete_user(e) {
+            $(".modal-dismiss").click();
+
+            if (!token || !row_id) {
+                alert("Chưa chọn");
+                return;
+            }
+
+            $.ajax({
+                url: "/userManagementDesktop/delete",
+                type: "post", //send it through get method
+                data: {
+                    data: JSON.stringify({
+                        token: token
+                    })
+                },
+                success: function (response) {
+                    //Do Something
+                    if (response.response_code == "ERRO_NOT_FOUND") {
+                        alert(response.description);
+                    } else {
+                        var table = $('#datatable-details').DataTable();
+                        table
+                            .row($("#row" + row_id))
+                            .remove()
+                            .draw();
+                        new PNotify({
+                            title: token,
+                            text: 'Đã xóa thành công.',
+                            type: 'success'
+                        });
+                    }
+
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                    alert("lỗi");
+
+                }
+            });
+        }
+block header
+    header.page-header
+        h2 Danh sách người dùng
+        div(class="right-wrapper pull-right")
+            ol.breadcrumbs
+                li
+                    a(href="dashboard")
+                        i(class="fa fa-home")
+                li
+                    span Người dùng desktop
+                li
+                    span Danh sách người dùng
+
+            a(class="sidebar-right-toggle" data-open="sidebar-right")
+                i(class="fa fa-chevron-left")
+
+block content
+
+    // start: page
+    section.panel
+        div.panel-body
+            table.table.table-bordered.table-striped.mb-none#datatable-details(data-src=data data-swf-path="assets/app/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf")
+                thead
+                    tr
+                        th token
+                        th email
+                        th machine_id
+                        th platform
+                        th action
+
+                tbody
+                    -for (var i = 0; i < data.length; i++)
+                        tr.gradeX(id="row"+i)
+                            td #{data[i].token}
+                            td #{data[i].email}
+                            td #{data[i].machine_id}
+                            td #{data[i].platform}
+                            td
+                                button(class="btn btn-default" onclick='ask("' + data[i].token + '","' + i + '")' )
+                                    i(class="fa fa-trash-o")
+
+            a(class="mb-xs mt-xs mr-xs modal-basic btn btn-primary hide" id="a"  href="#modalPrimary") Primary
+
+                div(id="modalPrimary" class="modal-block modal-block-primary mfp-hide")
+                    section(class="panel")
+                        header(class="panel-heading")
+                            h2(class="panel-title") Thông báo
+                        div(class="panel-body")
+                            div(class="modal-wrapper")
+                                div(class="modal-icon")
+                                    i(class="fa fa-question-circle")
+                                div(class="modal-text")
+                                    h4 Bạn có chắc muốn xóa không
+                        footer(class="panel-footer")
+                            div(class="row")
+                                div(class="col-md-12 text-right")
+                                    button(class="btn btn-primary modal-confirm" onclick='delete_user(this)') Có
+                                    button(class="btn btn-default modal-dismiss") Không
+
+
+block JS
+    script(src="assets/app/vendor/select2/select2.js")
+    script(src="assets/app/vendor/jquery-datatables/media/js/jquery.dataTables.js")
+    script(src="assets/app/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js")
+    script(src="assets/app/vendor/jquery-datatables-bs3/assets/js/datatables.js")
+
+    script(src="assets/app/vendor/pnotify/pnotify.custom.js")
+    script(src="js/userManagementDesktop.js")

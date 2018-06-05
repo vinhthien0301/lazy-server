@@ -1,0 +1,3 @@
+UPDATE `trDownloadLink` SET `command_format` = 'EthDcrMiner64.exe -epool [POOL] -ewal [WALLET] -eworker [WORKER_NAME] -mport [MONITOR_PORT] [MORE]' WHERE `trDownloadLink`.`id` = 1 AND `trDownloadLink`.`software` = 'CLAYMORE' AND `trDownloadLink`.`version` = '10.4' AND `trDownloadLink`.`name` = 'Claymores';
+
+UPDATE `trDownloadLink` SET `command_format` = 'EthDcrMiner64.exe -epool [POOL] -ewal [WALLET] -eworker [WORKER_NAME] -mport [MONITOR_PORT] [MORE]' WHERE `trDownloadLink`.`id` = 5 AND `trDownloadLink`.`software` = 'CLAYMORE' AND `trDownloadLink`.`version` = '11.4' AND `trDownloadLink`.`name` = 'Claymores';

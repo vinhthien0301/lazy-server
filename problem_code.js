@@ -1,0 +1,2 @@
+
+exports.RIG_MONITOR = "RIG_MONITOR";

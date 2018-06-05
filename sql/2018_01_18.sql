@@ -1,0 +1,3 @@
+UPDATE `trDownloadLink` SET `version` = '10.4', `download_link` = 'https://github.com/vinhthien0301/lazy-desktop/raw/master/softwares/Claymore\'s%20Dual%20Ethereum%2BDecred_Siacoin_Lbry_Pascal%20AMD%2BNVIDIA%20GPU%20Miner%20v10.4%20-%20Catalyst%2015.12-17.x%20-%20CUDA%208.0_7.5_6.5.zip', `filename` = 'Claymore\'s Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.4' WHERE `trDownloadLink`.`id` = 1;
+
+UPDATE `trDownloadLink` SET `download_link` = 'http://lazymining.com/lazy-desktop/softwares/Claymore\'s%20Dual%20Ethereum+Decred_Siacoin_Lbry_Pascal%20AMD+NVIDIA%20GPU%20Miner%20v10.4%20-%20Catalyst%2015.12-17.x%20-%20CUDA%208.0_7.5_6.5.zip' WHERE `trDownloadLink`.`id` = 1;

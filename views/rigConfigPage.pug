@@ -1,0 +1,157 @@
+extends layout
+block css
+    link(rel="stylesheet" href="assets/app/vendor/select2/select2.css")
+    link(rel="stylesheet" href="assets/app/vendor/jquery-datatables-bs3/assets/css/datatables.css")
+    link(rel="stylesheet" href="assets/app/vendor/pnotify/pnotify.custom.css")
+    link(rel="stylesheet" href="assets/app/css/utility.css")
+block info
+    script.
+        var email = "!{email}"
+        var page_name = "config_page"
+        var page_number_child_left_menu = 0
+block header
+    header.page-header
+        h2 Danh sách máy đào
+        div(class="right-wrapper pull-right")
+            ol.breadcrumbs
+                li
+                    a(href="dashboard")
+                        i(class="fa fa-home")
+                li
+                    span Cấu hình máy đào
+                li
+                    span Danh sách máy đào
+
+            a(class="sidebar-right-toggle" data-open="sidebar-right")
+                i(class="fa fa-chevron-left")
+
+block content
+
+
+    script.
+        var token = "!{token}"
+        var SUCC_EXEC = "SUCC_EXEC";
+        var ERRO_NOT_FOUND = "ERRO_NOT_FOUND";
+        var rowId = null;
+        var machineId = null;
+        var machineName = null;
+
+        function ask(id,machine_id,name) {
+            rowId = id;
+            //var array = !{data};
+            machineId = machine_id;
+            machineName = name
+            $("#a").click();
+
+        }
+
+        function updateMachine(id,token) {
+            window.location.href =  "/rigEditConfig?id=" + id;
+        }
+        function deleteRig(e) {
+            $(".modal-dismiss").click();
+
+            if(!rowId || !machineId || !machineName){
+                alert("Chưa chọn");
+                return;
+            }
+
+            $.ajax({
+                url: "/rigConfig",
+                type: "post", //send it through get method
+                data: {
+                    data: JSON.stringify({
+                        id: rowId,
+                        email: email,
+                        machine_id: machineId
+                    })
+                },
+                success: function (response) {
+                    //Do Something
+                    if (response.response_code == ERRO_NOT_FOUND) {
+                        alert(response.description);
+                    } else {
+                        var table = $('#datatable-tabletools').DataTable();
+                        table
+                            .row($("#row"+rowId).parents('tr'))
+                            .remove()
+                            .draw();
+                        new PNotify({
+                            title: machineName,
+                            text: 'Đã xóa thành công.',
+                            type: 'success'
+                        });
+                    }
+                    rowId = null;
+                    machineId = null;
+                    machineName = null;
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                    alert("lỗi");
+                    rowId = null;
+                    machineId = null;
+                    machineName = null;
+
+                }
+            });
+        }
+
+
+
+
+
+
+
+
+
+    // start: page
+    section.panel
+        div.panel-body
+            table.table.table-bordered.table-striped.mb-none#datatable-tabletools(data-swf-path="assets/app/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf")
+                thead
+                    tr
+                        th Tên máy đào
+                        th Đồng tiền và phần mềm đào
+                        th Mã máy đào
+                        th Hành động
+
+                tbody
+                    each miner in data
+                        tr.gradeX
+                            td #{miner.name}
+                            td #{miner.coins_related}
+                            td #{miner.machine_id}
+                            td(class="actions" on)
+                                button(type="button" class="mb-xs mt-xs mr-xs btn btn-default" onclick='updateMachine('+miner.id+',"'+token+'")')
+                                    i(class="fa fa-pencil" )
+                                button(class="btn btn-default" id='row'+miner.id onclick='ask('+miner.id+',"'+miner.machine_id+'","'+miner.name+'")' )
+                                    i(class="fa fa-trash-o")
+            a(class="mb-xs mt-xs mr-xs modal-basic btn btn-primary hide" id="a"  href="#modalPrimary") Primary
+
+                div(id="modalPrimary" class="modal-block modal-block-primary mfp-hide")
+                    section(class="panel")
+                        header(class="panel-heading")
+                            h2(class="panel-title") Thông báo
+                        div(class="panel-body")
+                            div(class="modal-wrapper")
+                                div(class="modal-icon")
+                                    i(class="fa fa-question-circle")
+                                div(class="modal-text")
+                                    h4 Bạn có chắc muốn xóa không
+                        footer(class="panel-footer")
+                            div(class="row")
+                                div(class="col-md-12 text-right")
+                                    button(class="btn btn-primary modal-confirm" onclick='deleteRig(this)') Có
+                                    button(class="btn btn-default modal-dismiss") Không
+
+
+
+block JS
+    script(src="assets/app/vendor/select2/select2.js")
+    script(src="assets/app/vendor/jquery-datatables/media/js/jquery.dataTables.js")
+    script(src="assets/app/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js")
+    script(src="assets/app/vendor/jquery-datatables-bs3/assets/js/datatables.js")
+
+    script(src="assets/app/vendor/pnotify/pnotify.custom.js")
+    script(src="js/rigConfigPage.js")

@@ -1,0 +1,131 @@
+extends authLayout
+
+block content
+    script.
+        function validateEmail(email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        function signUp() {
+            var emailInput = document.getElementsByName("username")[0];
+            var passwordInput = document.getElementsByName("pwd")[0];
+            var retypeInput = document.getElementsByName("retypePwd")[0];
+            var agreeTermsInput = document.getElementsByName("agreeterms")[0];
+
+            if (emailInput.value.length == 0) {
+                alert("Bạn chưa nhập địa chỉ Email");
+                return;
+            }
+
+            if (!validateEmail(emailInput.value)) {
+                alert("Vui lòng nhập địa chỉ Email hợp lệ.");
+                return
+            }
+
+            if (passwordInput.value.length < 6) {
+                alert("Mật mã phải từ 6 kí tự trở lên.");
+                return;
+            }
+
+            if (retypeInput.value.length == 0) {
+                alert("Bạn chưa nhập lại mật mã");
+                return;
+            }
+
+            if (retypeInput.value != passwordInput.value) {
+                alert("Mật mã nhập lại không trùng khớp.");
+                return;
+            }
+
+            if(!agreeTermsInput.checked){
+                alert("Chưa đồng ý với những điều khoản sử dụng");
+                return;
+            }
+
+
+
+            var app_code_name = navigator.appCodeName;
+            var app_name = navigator.appName;
+            var app_version = navigator.appVersion;
+            var platform = navigator.platform;
+            var user_agent = navigator.userAgent;
+            var product = navigator.product;
+            var product_sub = navigator.productSub;
+            var vendor = navigator.vendor;
+            $.ajax({
+                url: "/signup",
+                type: "post", //send it through get method
+                data: {
+                    email: emailInput.value,
+                    password: passwordInput.value,
+                    app_code_name: app_code_name,
+                    app_name: app_name,
+                    app_version: app_version,
+                    platform: platform,
+                    user_agent: user_agent,
+                    product: product,
+                    product_sub: product_sub,
+                    vendor: vendor
+                },
+                success: function (response) {
+                    if (response.response_code == "SUCC_SIGNUP") {
+                        var token = response.data.token;
+                        emailInput.value = '';
+                        passwordInput.value = '';
+                        retypeInput.value = '';
+                        window.location.href = "/rigConfig?token=" + token;
+                    } else if (response.response_code == "ERRO_ACCOUNT_EXISTING") {
+                        passwordInput.value = '';
+                        retypeInput.value = '';
+                        alert("Địa chỉ Email đã tồn tại.");
+                    }
+                },
+                error: function (xhr1) {
+                    passwordInput.value = '';
+                    retypeInput.value = '';
+                    alert("Máy chủ bảo trì. Không thể đăng ký vào lúc này!");
+                }
+            });
+
+        }
+
+    section.body-sign
+        div.center-sign
+            a(class='logo pull-left' href='#')
+                img(src='assets/app/images/logo.png' height='54' alt='Lazy Mining')
+            div.panel.panel-sign
+                div.panel-title-sign.mt-xl.text-right
+                    h2.title.text-uppercase.text-bold.m-none <i class="fa fa-user mr-xs"></i> Đăng Ký
+                div.panel-body
+                    form
+                        div.form-group.mb-lg
+                            label Địa chỉ Email
+                            div.input-group.input-group-icon
+                                input(name='username' type='email' class='form-control  input-lg signup')
+
+                        div(class="form-group mb-none")
+                            div.row
+                                div(class="col-sm-6 mb-lg")
+                                    label Mật mã
+                                    input(name="pwd" type="password" class="form-control input-lg signup")
+                                div(class="col-sm-6 mb-lg")
+                                    label Nhập lại mật mã
+                                    input(name="retypePwd" type="password" class="form-control input-lg signup")
+                        div.row
+                            div.col-sm-8
+                                div(class="checkbox-custom checkbox-default")
+                                    input(id="AgreeTerms" name="agreeterms" type="checkbox")
+                                    label(for="AgreeTerms") Tôi đồng ý với <a href="#">Điều khoản sử dụng</a>
+                            div(class="col-sm-4 text-right")
+                                button(type="button" class="btn btn-primary hidden-xs" onclick='signUp()') Tạo tài khoản mới
+                                button(type="button" class="btn btn-primary btn-block btn-lg visible-xs mt-lg" onclick='signUp()') Tạo tài khoản mới
+
+                        span.mt-lg.mb-lg.line-thru.text-center.text-uppercase
+                            span hoặc
+                        p.text-center Bạn đã có tài khoản? <a href='/login'> Đăng nhập ngay!</a>
+
+            p.text-center.text-muted.mt-md.mb-md &copy; Copyright 2018, Công ty TNHH phần mềm TECH STORM.
+
+block JS
+    script(src="js/submitFormSignupEnter.js")

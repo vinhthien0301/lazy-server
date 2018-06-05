@@ -1,0 +1,60 @@
+doctype html
+block vars
+    - var app_name='Lazy Mining'
+
+html
+    head
+        // Basic
+        meta(http-equiv='Content-Type' content='text/html; charset=utf-8')
+
+        meta(name="keywords", content="Lazy Mining")
+        meta(name="description", content="Trang quản lý - Lazy Mining")
+        meta(name="author", content="Thien, Au Vinh")
+
+        // Mobile Metas
+        meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+
+        // Web Fonts
+        link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light')
+
+        // Vendor CSS
+        link(rel='stylesheet', href='assets/app/vendor/bootstrap/css/bootstrap.css')
+
+        link(rel='stylesheet', href='assets/app/vendor/font-awesome/css/font-awesome.css')
+        link(rel='stylesheet', href='assets/app/vendor/magnific-popup/magnific-popup.css')
+        link(rel='stylesheet', href='assets/app/vendor/bootstrap-datepicker/css/datepicker3.css')
+
+        // Theme CSS
+        link(rel='stylesheet', href='assets/app/stylesheets/theme.css')
+
+
+        // Skin CSS
+        link(rel='stylesheet', href='assets/app/stylesheets/skins/default.css')
+
+        // Theme Custom CSS
+        link(rel='stylesheet', href='assets/app/stylesheets/theme-custom.css')
+
+        // Head Libs
+        script(src="assets/app/vendor/modernizr/modernizr.js")
+
+
+    body
+        block content
+
+        // Vendor
+        script(src="assets/app/vendor/jquery/jquery.js")
+        script(src="assets/app/vendor/jquery-browser-mobile/jquery.browser.mobile.js")
+        script(src="assets/app/vendor/bootstrap/js/bootstrap.js")
+        script(src="assets/app/vendor/nanoscroller/nanoscroller.js")
+        script(src="assets/app/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js")
+        script(src="assets/app/vendor/magnific-popup/magnific-popup.js")
+        script(src="assets/app/vendor/jquery-placeholder/jquery.placeholder.js")
+        block JS
+        // Theme Base, Components and Settings
+        script(src="assets/app/javascripts/theme.js")
+
+        // Theme Custom
+        script(src="assets/app/javascripts/theme.custom.js")
+
+        // Theme Initialization Files
+        script(src="assets/app/javascripts/theme.init.js")

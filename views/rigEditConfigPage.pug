@@ -1,0 +1,260 @@
+extends layout
+block css
+    link(rel="stylesheet" href="assets/app/vendor/select2/select2.css")
+    link(rel="stylesheet" href="assets/app/vendor/jquery-datatables-bs3/assets/css/datatables.css")
+    link(rel="stylesheet" href="assets/app/vendor/pnotify/pnotify.custom.css")
+
+    link(rel="stylesheet" href="assets/app/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css")
+    link(rel="stylesheet" href="assets/app/vendor/bootstrap-multiselect/bootstrap-multiselect.css")
+    link(rel="stylesheet" href="assets/app/vendor/bootstrap-tagsinput/bootstrap-tagsinput.css")
+    link(rel="stylesheet" href="assets/app/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css")
+    link(rel="stylesheet" href="assets/app/vendor/bootstrap-timepicker/css/bootstrap-timepicker.css")
+    link(rel="stylesheet" href="assets/app/vendor/dropzone/css/basic.css")
+    link(rel="stylesheet" href="assets/app/vendor/dropzone/css/dropzone.css")
+    link(rel="stylesheet" href="assets/app/vendor/bootstrap-markdown/css/bootstrap-markdown.min.css")
+    link(rel="stylesheet" href="assets/app/vendor/summernote/summernote.css")
+    link(rel="stylesheet" href="assets/app/vendor/summernote/summernote-bs3.css")
+    link(rel="stylesheet" href="assets/app/vendor/codemirror/lib/codemirror.css")
+    link(rel="stylesheet" href="assets/app/vendor/codemirror/theme/monokai.css")
+    link(rel="stylesheet" href="css/rigEditConfigPage.css")
+
+block header
+    header.page-header
+        h2 Chi tiết máy đào
+        div(class="right-wrapper pull-right")
+            ol.breadcrumbs
+                li
+                    a(href="dashboard")
+                        i(class="fa fa-home")
+                li
+                    a(href="rigConfig")
+                        span Danh sách máy đào
+                li
+                    span Chi tiết máy đào
+
+            a(class="sidebar-right-toggle" data-open="sidebar-right")
+                i(class="fa fa-chevron-left")
+block content
+
+    script.
+        var SUCC_EXEC = "SUCC_EXEC";
+        var ERRO_NOT_FOUND = "ERRO_NOT_FOUND";
+        var globalSelect = !{JSON.stringify(select).replace(/<\//g, "<\\/")}
+        var globalBatch = !{JSON.stringify(batch).replace(/<\//g, "<\\/")}
+        var globalData = !{JSON.stringify(data).replace(/<\//g, "<\\/")}
+        var globalDownloadLink = !{JSON.stringify(downloadLink).replace(/<\//g, "<\\/")}
+        var page_name = "config_page"
+        var page_number_child_left_menu = 0
+        var is_admin = !{is_admin}
+        var email = "!{email}"
+
+
+    div(class="row")
+        div(class="col-lg-12")
+            section(class="panel")
+                header(class="panel-heading")
+                    div(class="panel-actions")
+                        a(href="#" class="panel-action panel-action-toggle" data-panel-toggle)
+                        a(href="#" class="panel-action panel-action-dismiss" data-panel-dismiss)
+
+                    h2(class="panel-title") #{data.name}
+
+                div(class="panel-body")
+                        div(class="form-group")
+                            label(class="col-md-3 control-label"  for="inputDefault") Email
+                            div(class="col-md-6")
+                                input(type="text" class="form-control" disabled="" value=data.email )
+                        div(class="form-group")
+                            label(class="col-md-3 control-label" for="inputDefault") Mã máy đào
+                            div(class="col-md-6")
+                                input(type="text" class="form-control" disabled="" value=data.machine_id )
+                        div(class="form-group")
+                            label(class="col-md-3 control-label" for="inputDefault") Hệ điều hành
+                            div(class="col-md-6")
+                                input(type="text" class="form-control" disabled="" value=data.platform)
+                        div(class="form-group")
+                            label(class="col-md-3 control-label" for="inputDefault") Tên máy đào
+                                span(class="required")   *
+                            div(class="col-md-6")
+                                input#name(type="text" class="form-control"  value=data.name)
+                        div(class="form-group")
+                            label(class="col-md-3 control-label" for="inputDefault") Đồng tiền và phần mềm đào
+                                span(class="required")   *
+                            div(class="col-md-6")
+                                select#select-coin( class="form-control populate" data-plugin-selectTwo)
+                                    each item in batch
+                                        option(selected=data.coins_related == (item.coins_related + " | " + item.name)) #{item.coins_related} | #{item.name}
+                        div(class="form-group")
+                            label(class="col-md-3 control-label" for="inputDefault") Hố đào
+                                span(class="required")   *
+                            div(class="col-md-6")
+                                input#pool(type="text" class="form-control"  value=data.pool)
+                        div(class="form-group")
+                            label(class="col-md-3 control-label" for="inputDefault") Địa chỉ ví
+                                span(class="required")   *
+                            div(class="col-md-6")
+                                input#wallet(type="text" class="form-control"  value=data.wallet)
+                        div(class="form-group")
+                            label(class="col-md-3 control-label" for="inputDefault") Tự động chạy đào lúc khởi động
+                            div(class="col-md-3")
+                                div(class="checkbox")
+                                    label
+                                        if(data.auto_start == 1)
+                                            input#auto(type='checkbox', checked )
+                                        else
+                                            input#auto(type='checkbox')
+
+
+                footer(class="panel-footer")
+                    div(class="row")
+                        div(class="col-sm-9 col-sm-offset-3")
+                            button(class="mb-xs mt-xs mr-xs btn btn-primary" onclick='updateAndRunMachine()') Lưu và chạy phần mềm
+                            button(class="mb-xs mt-xs mr-xs btn btn-success" onclick='updateMachine()') Lưu
+
+
+
+
+
+    div(class="row")
+        div(class="col-lg-12")
+            section(class="panel")
+                header(class="panel-heading")
+                    div(class="panel-actions")
+                        a(href="#" class="panel-action panel-action-toggle" data-panel-toggle)
+                        a(href="#" class="panel-action panel-action-dismiss" data-panel-dismiss)
+
+                    a(id="openModal" class="modal-with-form btn btn-default" href="#modalForm" ) Thêm đồng tiền và phần mềm đào
+
+                    <!-- Modal Form -->
+                    div(id="modalForm" class="modal-block modal-block-primary mfp-hide")
+                        section(class="panel")
+                            header(class="panel-heading")
+                                h2(class="panel-title") Thêm loại tiền
+
+                            div(class="panel-body")
+                                    div(class="form-group mt-lg")
+                                        label(class="col-sm-3 control-label") Tên đơn vị đào
+                                            span(class="required")   *
+                                        div(class="col-sm-9")
+                                            input#name-batch(type="text" name="name" class="form-control" required)
+                                    div(class="form-group mt-lg")
+                                        label(class="col-sm-3 control-label") Đồng tiền cần đào
+                                            span(class="required")   *
+                                        div(class="col-sm-9")
+                                            input#coin(type="text" name="name" class="form-control" required)
+                                    div(class="form-group mt-lg")
+                                        label(class="col-sm-3 control-label") Phần mềm đào
+                                            span(class="required")   *
+                                        div(class="col-sm-9")
+                                            select#software-select( class="form-control mb-md" )
+                                                each obj in downloadLink
+                                                    option(value=obj.id) #{obj.name} #{obj.version}
+                                    if is_admin
+                                        div(class="form-group")
+                                            label(class="col-sm-3 control-label") Is global
+                                            div(class="col-sm-9")
+                                                input(type="checkbox" id="is_global_check" )
+                                    div(class="form-group")
+                                        label(class="col-sm-3 control-label") Mô tả chức năng đào
+                                        div(class="col-sm-9")
+                                            textarea#des(rows="5" class="form-control"  required)
+                                    div(class="form-group")
+                                        label(class="col-sm-3 control-label") Tập lệnh chạy phần mềm đào
+                                        div(class="col-sm-9")
+                                            textarea#bat(rows="5" class="form-control"  required)
+                            footer(class="panel-footer")
+                                div(class="row")
+                                    div(class="col-md-12 text-right")
+                                        button#btn-add(class="mb-xs mt-xs mr-xs btn btn-primary " onclick='add("' + data.platform + '")') Thêm đơn vị đào
+                                        button(class="mb-xs mt-xs mr-xs btn btn-default " onclick='reset()') Xoá thay đổi
+                                        button(class="mb-xs mt-xs mr-xs btn btn-success modal-dismiss" onclick='apply("' + data.platform + '")') Sử dụng
+                                        button(class="mb-xs mt-xs mr-xs btn btn-danger modal-dismiss" onclick="only_reset()") Thoát
+                                        button(class="mb-xs mt-xs mr-xs btn btn-danger modal-dismiss hide" id="escape" )
+
+                div(class="panel-body")
+                    table.table.table-bordered.table-striped.mb-none#datatable-tabletools(data-swf-path="assets/app/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf")
+                        thead
+                            th Tên đơn vị đào
+                            th Đồng tiền cần đào
+                            th Phần mềm đào
+                            th Mô tả chức năng đào
+                            th Hệ điều hành
+                            th Hành động
+                        tbody#table-batch
+                            each obj in batch
+                                tr
+                                    td #{obj.name}
+                                    td #{obj.coins_related}
+                                        each item in downloadLink
+                                            if obj.software == item.id
+                                                td #{item.software} #{item.version}
+                                    td #{obj.description}
+                                    td #{obj.platform}
+                                    td
+                                        if obj.is_global == 0
+                                            a(class="modal-with-form btn btn-default" href="#modalForm" onclick='edit(' + obj.id + ',this,false)' )
+                                                i(class="fa fa-pencil")
+                                            button(class="btn btn-default" id="row" + obj.id onclick='ask(' + obj.id + ')')
+                                                i(class="fa fa-trash-o")
+                                        else
+                                            if obj.is_global == 1  && is_admin
+                                                a(class="modal-with-form btn btn-default" href="#modalForm" onclick='edit(' + obj.id + ',this,false)' )
+                                                    i(class="fa fa-pencil")
+                                                button(class="btn btn-default" id="row" + obj.id onclick='ask(' + obj.id + ')')
+                                                    i(class="fa fa-trash-o")
+
+    a(class="mb-xs mt-xs mr-xs modal-basic btn btn-primary hide" id="a"  href="#modalPrimary") Primary
+
+        div(id="modalPrimary" class="modal-block modal-block-primary mfp-hide")
+            section(class="panel")
+                header(class="panel-heading")
+                    h2(class="panel-title") Thông báo
+                div(class="panel-body")
+                    div(class="modal-wrapper")
+                        div(class="modal-icon")
+                            i(class="fa fa-question-circle")
+                        div(class="modal-text")
+                            h4 Bạn có chắc muốn xóa không
+                footer(class="panel-footer")
+                    div(class="row")
+                        div(class="col-md-12 text-right")
+                            button(class="btn btn-primary " onclick='deleteCoin()') Có
+                            button(class="btn btn-default modal-dismiss" id="nobutton") Không
+
+
+block JS
+
+    script(src="assets/app/vendor/select2/select2.js")
+    script(src="assets/app/vendor/jquery-datatables/media/js/jquery.dataTables.js")
+    script(src="assets/app/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js")
+    script(src="assets/app/vendor/jquery-datatables-bs3/assets/js/datatables.js")
+    script(src="assets/app/vendor/pnotify/pnotify.custom.js")
+
+    script(src="/js/rigEditConfig.js")
+
+    script(src="assets/app/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js")
+    script(src="assets/app/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js")
+    script(src="assets/app/vendor/bootstrap-multiselect/bootstrap-multiselect.js")
+    script(src="assets/app/vendor/jquery-maskedinput/jquery.maskedinput.js")
+    script(src="assets/app/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js")
+    script(src="assets/app/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js")
+    script(src="assets/app/vendor/bootstrap-timepicker/js/bootstrap-timepicker.js")
+    script(src="assets/app/vendor/fuelux/js/spinner.js")
+    script(src="assets/app/vendor/dropzone/dropzone.js")
+    script(src="assets/app/vendor/bootstrap-markdown/js/markdown.js")
+    script(src="assets/app/vendor/bootstrap-markdown/js/to-markdown.js")
+    script(src="assets/app/vendor/bootstrap-markdown/js/bootstrap-markdown.js")
+    script(src="assets/app/vendor/codemirror/lib/codemirror.js")
+    script(src="assets/app/vendor/codemirror/addon/selection/active-line.js")
+    script(src="assets/app/vendor/codemirror/addon/edit/matchbrackets.js")
+    script(src="assets/app/vendor/codemirror/mode/javascript/javascript.js")
+    script(src="assets/app/vendor/codemirror/mode/xml/xml.js")
+    script(src="assets/app/vendor/codemirror/mode/htmlmixed/htmlmixed.js")
+    script(src="assets/app/vendor/codemirror/mode/css/css.js")
+    script(src="assets/app/vendor/summernote/summernote.js")
+    script(src="assets/app/vendor/bootstrap-maxlength/bootstrap-maxlength.js")
+    script(src="assets/app/vendor/ios7-switch/ios7-switch.js")
+    script(src="assets/app/vendor/bootstrap-confirmation/bootstrap-confirmation.js")
+    script(src="assets/app/javascripts/forms/examples.advanced.form.js")
+
+    script(src="js/rigEditConfigPage.js")
