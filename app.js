@@ -81,8 +81,7 @@ app.use(stylus.middleware(
     }
 ));
 
-// Uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(express_logger('dev'));
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(i18n.init);
@@ -91,12 +90,6 @@ app.use(i18n.init);
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    req.json = {
-        "miners": miners.json,
-        "updated": moment().format("YYYY-MM-DD HH:mm:ss")
-    };
-    req.miners = miners;
-    req.turns = turns;
 
     next();
 });
