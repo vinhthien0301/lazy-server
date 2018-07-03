@@ -87,7 +87,7 @@ router.post('/', function (req, res) {
                 } else {
                     res.json(api.getResponse(api.ERRO_INVALID_AUTH, null, "Wrong username or password."));
                 }
-            });
+            }); 
 
         } else {
             res.json(api.getResponse(api.ERRO_INVALID_AUTH, null, "Wrong username or password."));
