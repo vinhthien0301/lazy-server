@@ -68,8 +68,6 @@ router.post('/', function(req, res) {
                     var email = results[0].email;
 
                     if (email == emailSubmitted) {
-                        var target_miners = req.json.miners[email];
-                        req.json.miners = target_miners;
                         res.json(api.getResponse(api.SUCC_MINERS, obj, "Get rigs"));
                     } else {
                         res.json(api.getResponse(api.ERRO_EMAIL_NOT_FOUND, obj, "Email isn't matched"));
@@ -83,8 +81,6 @@ router.post('/', function(req, res) {
                     var email = results[0].email;
 
                     if (email == emailSubmitted) {
-                        var target_miners = req.json.miners[email];
-                        req.json.miners = target_miners;
                         res.json(api.getResponse(api.SUCC_MINERS, obj, "Get rigs"));
                     } else {
                         res.json(api.getResponse(api.ERRO_EMAIL_NOT_FOUND, obj, "Email isn't matched"));
@@ -100,10 +96,6 @@ router.post('/', function(req, res) {
 
     });
 
-    //var email = "vinh.thien0301@gmail.com";
-    //var target_miners = req.json.miners[email];
-    //req.json.miners = target_miners;
-    //res.json(req.json);
 });
 
 module.exports = router;

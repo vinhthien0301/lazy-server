@@ -521,8 +521,9 @@ io.on('connection', function (socket) {
         check_token(token, software, json, function (software, json) {
 
 
+            // TODO: DO THIS LATER
             // check if error card
-            if (json.main_coin_hr) {
+            if (json.main_coin_hr && false) {
                 var main_coin_hr_array = json.main_coin_hr.split(";");
                 for (var index = 0; index < main_coin_hr_array.length; index++) {
                     if (main_coin_hr_array[index] == 0 || main_coin_hr_array[index] == "0") {
@@ -653,8 +654,6 @@ io.on('connection', function (socket) {
                 version = json.version;
             }
             var latestVersion = null;
-            console.log(json.working_status);
-            console.log(json.warning_message);
             db.getLazyDesktopVersion(function (isFail, data) {
                 if (!isFail && data && data.length == 1) {
                     var tempVersion = data[0].value;
