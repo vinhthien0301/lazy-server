@@ -11,10 +11,6 @@ var moment = require('moment');
 
 // GET home page
 router.get('/', function(req, res, next) {
-    // i18n.locale = 'en';
-    // console.log(i18n.__('Hello'));
-    // i18n.locale = 'vi';
-    // console.log(i18n.__('Hello'));
     if(req.session.token && req.session.email) {
         res.redirect('dashboard');
     }else {
@@ -33,7 +29,6 @@ router.post('/validate', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    console.log("pass firest");
 
     var obj = req.body;
         var email = obj.email;
@@ -45,11 +40,10 @@ router.post('/', function (req, res) {
         var product = obj.product;
         var product_sub = obj.product_sub;
         var vendor = obj.vendor;
-        console.log("pass");
-    function delete_token(callback) {
-        if(req.session.token && req.session.email) {
-            var previousToken = req.session.token;
-            var previousEmail = req.session.email;
+    function delete_token(token, email, callback) {
+        if(token && email) {
+            var previousToken = token;
+            var previousEmail = email;
             db.removeUpdateAuthWebFrontend(previousToken,previousEmail,function () {
                 callback();
             });
@@ -69,8 +63,9 @@ router.post('/', function (req, res) {
         if (err) {
             return;
         }
+
         if (results.length > 0) {
-            delete_token(function () {
+            delete_token(req.session.token, req.session.email, function () {
                 if (email == results[0].email && password == results[0].password) {
                     var token = uuidV4();
                     db.generateTokenWebFrontEnd(token, email, app_code_name, app_name, app_version, platform, product, product_sub, user_agent, vendor, ip, function (err, results) {
@@ -81,8 +76,12 @@ router.post('/', function (req, res) {
                             "token": token,
                             "email": email
                         };
+                        console.log(444222);
+
                         req.session.email = email;
                         req.session.token = token;
+                        console.log(req.session.email);
+                        console.log(req.session.token);
                         res.json(api.getResponse(api.SUCC_LOGIN, data, "Response from login"));
                     });
                 } else {

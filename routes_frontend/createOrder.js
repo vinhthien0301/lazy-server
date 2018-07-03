@@ -26,8 +26,8 @@ router.get('/', function (req, res, next) {
                                     res.redirect("login");
                                     return;
                                 }
-                                var bank_list = [{name: "Vietcombank",url:"assets/app/images/vietcombank_logo.png"}
-                                ,{name: "Sacombank",url:"assets/app/images/sacombank_logo.jpg"}];
+                                var bank_list = [{name: "Vietcombank",url:"images/vietcombank_logo.png"}
+                                ,{name: "Sacombank",url:"images/sacombank_logo.jpg"}];
                                 db.insertOrder(email,"NEW",2,"Vietcombank",function (e7, data) {
                                     if(e7){
                                         res.redirect("login");

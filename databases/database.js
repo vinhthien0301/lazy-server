@@ -54,7 +54,8 @@ exports.validateUser = function(email, callback) {
 
     var sql = "SELECT us.email, us.password " +
         "FROM trUser us " +
-        "WHERE us.email=? and us.deleted=0";
+        "WHERE us.email=? " +
+        "   AND us.deleted=0 ";
 
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
@@ -697,7 +698,8 @@ exports.removeLoadRig = function(email, name, callback) {
 exports.removeUpdateAuthWebFrontend = function(token, email, callback) {
     var sql = "UPDATE trAuthWebFrontEnd " +
         "SET deleted=1 " +
-        "WHERE token=? AND email=?";
+        "WHERE token=? " +
+        "   AND email=? ";
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }

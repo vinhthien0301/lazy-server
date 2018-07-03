@@ -1,10 +1,10 @@
 extends ../layout
 block css
-    link(rel="stylesheet" href="assets/app/vendor/pnotify/pnotify.custom.css")
-    link(rel="stylesheet" href="assets/app/vendor/select2/select2.css")
-    link(rel="stylesheet" href="assets/app/vendor/jquery-datatables-bs3/assets/css/datatables.css")
-    link(rel="stylesheet" href="assets/app/vendor/bootstrap-fileupload/bootstrap-fileupload.min.css")
-    link(rel="stylesheet" href="assets/app/css/utility.css")
+    link(rel="stylesheet" href="vendor/pnotify/pnotify.custom.css")
+    link(rel="stylesheet" href="vendor/select2/select2.css")
+    link(rel="stylesheet" href="vendor/jquery-datatables-bs3/assets/css/datatables.css")
+    link(rel="stylesheet" href="vendor/bootstrap-fileupload/bootstrap-fileupload.min.css")
+    link(rel="stylesheet" href="css/utility.css")
 
 block header
     header.page-header
@@ -194,7 +194,7 @@ block content
                 div(class="panel-body")
                     div(class="form-group")
 
-                        table.table.table-bordered.table-striped.mb-none#datatable-tabletools(data-swf-path="assets/app/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf")
+                        table.table.table-bordered.table-striped.mb-none#datatable-tabletools(data-swf-path="vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf")
                             thead
                                 th Email
                                     th Name
@@ -228,14 +228,14 @@ block content
 
 
 block JS
-    script(src="assets/app/vendor/pnotify/pnotify.custom.js")
-    script(src="assets/app/vendor/select2/select2.js")
-    script(src="assets/app/vendor/jquery-datatables/media/js/jquery.dataTables.js")
-    script(src="assets/app/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js")
-    script(src="assets/app/vendor/jquery-datatables-bs3/assets/js/datatables.js")
+    script(src="vendor/pnotify/pnotify.custom.js")
+    script(src="vendor/select2/select2.js")
+    script(src="vendor/jquery-datatables/media/js/jquery.dataTables.js")
+    script(src="vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js")
+    script(src="vendor/jquery-datatables-bs3/assets/js/datatables.js")
     script(src="js/eventManagementPage.js")
-    script(src="assets/app/vendor/jquery-autosize/jquery.autosize.js")
-    script(src="assets/app/vendor/bootstrap-fileupload/bootstrap-fileupload.min.js")
+    script(src="vendor/jquery-autosize/jquery.autosize.js")
+    script(src="vendor/bootstrap-fileupload/bootstrap-fileupload.min.js")
 
 
 

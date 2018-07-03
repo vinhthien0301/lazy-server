@@ -55,7 +55,7 @@ var options = {
     checkExpirationInterval: 10000, // 10 seconds
     expiration: 300000, // 5 minutes
     schema: {
-        tableName: 'trWebSessions',
+        tableName: 'trwebsessions',
         columnNames: {
             session_id: 'session_id',
             expires: 'expires',

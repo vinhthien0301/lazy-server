@@ -17,12 +17,7 @@ router.post('/', function (req, res) {
 
         if (data && data.length > 0) {
             var socket_id = data[0].socket_id;
-            console.log("machineID "+ machineID);
-            console.log("email "+ email);
-            console.log("socket_id "+ socket_id);
-            console.log(socket.nsp.adapter.nsp);
-
-            if (socket.nsp.adapter.nsp.sockets[socket_id]) {
+            if (socket && socket.nsp.adapter.nsp.sockets[socket_id]) {
                 socket.nsp.adapter.nsp.sockets[socket_id].emit('restart-miner');
             }
             res.json(api.getResponse(api.SUCC_RESET_MINER, null, "success"));
