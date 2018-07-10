@@ -6,3 +6,4 @@ package-lock.json
 lazy-server.log.previous
 config.json
 sql/create_user_access.sql
+/lazy-server-dev.log.previous
