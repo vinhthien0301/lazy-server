@@ -52,8 +52,8 @@ var options = {
     user: config.database_username,
     password: config.database_password,
     database: config.database_name,
-    checkExpirationInterval: 10000, // 10 seconds
-    expiration: 300000, // 5 minutes
+    checkExpirationInterval: 600000, // 10 minutes
+    expiration: 1800000, // 30 minutes
     schema: {
         tableName: 'trwebsessions',
         columnNames: {
