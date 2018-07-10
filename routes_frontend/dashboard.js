@@ -9,6 +9,9 @@ var utility = require('./utility');
 
 // GET home page
 router.get('/', function (req, res, next) {
+    console.log('dash');
+    console.log(req.session.token);
+    console.log(req.session.email);
     if(!req.session.token || !req.session.email) {
         res.redirect('login');
         return;
@@ -17,9 +20,13 @@ router.get('/', function (req, res, next) {
     var token = req.session.token;
     db.validateAuthFrontEndToken(token,function (e, result) {
         if(e){
+            console.log(555555);
+            console.log(e);
             utility.reDirectToLogin(res);
             return;
         }
+        console.log(12222);
+        console.log(result);
         if(result) {
             if (result.length > 0) {
                 if (result[0].count > 0) {
