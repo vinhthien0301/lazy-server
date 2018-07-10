@@ -111,6 +111,12 @@ block content
             p.text-center.text-muted.mt-md.mb-md &copy; Copyright 2018, Công ty TNHH phần mềm TECH STORM.
 
 block JS
-    script(src="js/submitFormLoginEnter.js")
-
+    script.
+        $('.login').keydown(function (event) {
+            if (event.keyCode == 13) {
+                // this.form.submit();
+                login();
+                return false;
+            }
+        });
 
