@@ -1909,8 +1909,10 @@ exports.getMinerConfigByEmail = function(email,callback) {
         "FROM trRigConfig rc " +
         "   LEFT JOIN trLoadRig lr " +
         "       ON rc.email = lr.email " +
-        "       AND rc.machine_id = lr.machine_id " +
-        "WHERE rc.email=? AND rc.deleted=0 ";
+        "           AND rc.machine_id = lr.machine_id " +
+        "           AND lr.deleted=0 " +
+        "WHERE rc.email=? " +
+        "   AND rc.deleted=0 ";
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
