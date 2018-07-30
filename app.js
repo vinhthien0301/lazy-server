@@ -501,8 +501,6 @@ io.on('connection', function (socket) {
                     if (e) {
                         return;
                     }
-                    console.log("check");
-                    console.log(count);
                     if (count[0].count == 0) {
                         socket.emit("not_found_token");
                         return;
