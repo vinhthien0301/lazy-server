@@ -129,7 +129,7 @@ block content
                             td #{miner.coins_related}
                             td #{miner.wallet}
                             td #{miner.pool}
-                            td.duration-time (#{miner.load_rig_updated_at})
+                            td.duration-time #{miner.load_rig_updated_at}
                             td #{miner.total_main_speed} #{miner.main_speed_unit}
                             td #{miner.uptime}
                             td #{miner.local_ip}
@@ -171,5 +171,5 @@ block JS
 
     script.
         $(".duration-time").each(function (index, element) {
-            element.innerHTML(convertToDurationTimeString($(this).text()));
+            $(this).html(convertToDurationTimeString($(this).text()));
         });
