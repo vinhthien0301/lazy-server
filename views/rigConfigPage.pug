@@ -129,7 +129,7 @@ block content
                             td #{miner.coins_related}
                             td #{miner.wallet}
                             td #{miner.pool}
-                            td #{miner.load_rig_updated_at}
+                            td.duration-time (#{miner.load_rig_updated_at})
                             td #{miner.total_main_speed} #{miner.main_speed_unit}
                             td #{miner.uptime}
                             td #{miner.local_ip}
@@ -164,6 +164,12 @@ block JS
     script(src="vendor/jquery-datatables/media/js/jquery.dataTables.js")
     script(src="vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js")
     script(src="vendor/jquery-datatables-bs3/assets/js/datatables.js")
-
     script(src="vendor/pnotify/pnotify.custom.js")
+
+    script(src="js/genericHelpers.js")
     script(src="js/rigConfigPage.js")
+
+    script.
+        $(".duration-time").each(function (index, element) {
+            element.html(convertToDurationTimeString($(this).text()));
+        });
