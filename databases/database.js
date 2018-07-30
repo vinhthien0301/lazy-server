@@ -1904,7 +1904,7 @@ exports.updateMinerCofigByRowId = function(id,email,name,coin_name,pool_hole,wal
 
 
 exports.getMinerConfigByEmail = function(email,callback) {
-    var sql = "SELECT rc.*, lr.working_status, lr.local_ip, lr.total_main_speed, lr.uptime, lr.updated_at " +
+    var sql = "SELECT rc.*, lr.working_status, lr.local_ip, lr.total_main_speed, lr.uptime, lr.updated_at as load_rig_updated_at " +
         "FROM trRigConfig rc " +
         "   LEFT JOIN trLoadRig lr " +
         "       ON rc.email = lr.email " +
