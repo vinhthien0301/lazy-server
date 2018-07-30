@@ -115,6 +115,7 @@ block content
                         th Đồng tiền và phần mềm đào
                         th Ví
                         th Hố đào
+                        th IP nội bộ
                         th Trạng thái hoạt động
                         th Hành động
 
@@ -125,6 +126,7 @@ block content
                             td #{miner.coins_related}
                             td #{miner.wallet}
                             td #{miner.pool}
+                            td #{miner.local_ip}
                             td #{miner.working_status}
                             td(class="actions" on)
                                 button(type="button" class="mb-xs mt-xs mr-xs btn btn-default" onclick='updateMachine('+miner.id+',"'+token+'")')
