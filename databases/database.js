@@ -1904,9 +1904,12 @@ exports.updateMinerCofigByRowId = function(id,email,name,coin_name,pool_hole,wal
 
 
 exports.getMinerConfigByEmail = function(email,callback) {
-    var sql = "SELECT * " +
-        "FROM trRigConfig " +
-        "WHERE email=? AND deleted=0";
+    var sql = "SELECT rc.*, lr.working_status " +
+        "FROM trRigConfig rc " +
+        "   LEFT JOIN trLoadRig lr " +
+        "       ON rc.email = lr.email " +
+        "       AND rc.machine_id = lr.machine_id " +
+        "WHERE email=? AND deleted=0 ";
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
