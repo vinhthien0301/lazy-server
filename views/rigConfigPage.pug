@@ -171,5 +171,5 @@ block JS
 
     script.
         $(".duration-time").each(function (index, element) {
-            $(this).html(convertToDurationTimeString($(this).text()));
+            element.innerText = convertToDurationTimeString($(this).text());
         });
