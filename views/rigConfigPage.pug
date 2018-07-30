@@ -113,7 +113,8 @@ block content
                     tr
                         th Tên máy đào
                         th Đồng tiền và phần mềm đào
-                        th Mã máy đào
+                        th Ví
+                        th Hố đào
                         th Hành động
 
                 tbody
@@ -121,7 +122,8 @@ block content
                         tr.gradeX
                             td #{miner.name}
                             td #{miner.coins_related}
-                            td #{miner.machine_id}
+                            td #{miner.wallet}
+                            td #{miner.pool}
                             td(class="actions" on)
                                 button(type="button" class="mb-xs mt-xs mr-xs btn btn-default" onclick='updateMachine('+miner.id+',"'+token+'")')
                                     i(class="fa fa-pencil" )
