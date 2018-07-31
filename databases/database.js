@@ -1302,18 +1302,25 @@ exports.updateLoadRig = function(row_id,machine_id, email, local_ip, main_coin, 
         }
         // make the query
         var id = row_id;
+
+        var now = api.getNow();
+
         var updateSql = "UPDATE trLoadRig " +
             "SET email=?, local_ip=?, main_coin=?, main_coin_hr=?" +
             ", main_speed_unit=?, mining_info_ready=?, name=?, pools=?" +
             ", show_mode=?, sub_coin=?, sub_coin_hr=?, sub_speed_unit=?" +
             ", temps=?, total_main_speed=?, total_sub_speed=?, uptime=?" +
-            ", ver=?, deleted=0, working_status=?, warning_message=?, machine_id=?, public_ip=?, lazy_desktop_version=?, lazy_desktop_latest=? " +
+            ", ver=?, deleted=0, working_status=?, warning_message=?" +
+            ", machine_id=?, public_ip=?, lazy_desktop_version=?" +
+            ", lazy_desktop_latest=?, updated_at=? " +
             "WHERE id=?";
         connectiona.query(updateSql, [email, local_ip, main_coin, main_coin_hr,
             main_speed_unit, mining_info_ready, name,
             pools, show_mode, sub_coin, sub_coin_hr,
             sub_speed_unit, temps, total_main_speed,
-            total_sub_speed, uptime, ver, working_status, warning_message, machine_id, public_ip, lazy_desktop_version, lazy_desktop_latest, id], function (err1, result) {
+            total_sub_speed, uptime, ver, working_status,
+            warning_message, machine_id, public_ip, lazy_desktop_version,
+            lazy_desktop_latest, now, id], function (err1, result) {
             connectiona.release();
             if (err1) {
                 console.log(err1);
