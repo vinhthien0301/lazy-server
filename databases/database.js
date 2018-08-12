@@ -16,6 +16,48 @@ var pool = mysql.createPool({
     supportBigNumbers: true
 });
 
+exports.rigConfigAlias = function() {
+    return "prd1";
+};
+
+exports.rigConfigSelect = function() {
+    return " " + this.rigConfigAlias()+".email, "+this.rigConfigAlias()+".name, "
+        +this.rigConfigAlias()+".coins_related, "+this.rigConfigAlias()+".pool, "
+        +this.rigConfigAlias()+".wallet, " +this.rigConfigAlias()+".machine_id, "
+        +this.rigConfigAlias()+".auto_start, " +this.rigConfigAlias()+".platform, "
+        +this.rigConfigAlias()+".version ";
+};
+
+exports.rigConfigFrom = function() {
+    var data =  " (SELECT pt.email, pt.name, pt.coins_related, pt.pool, " +
+        "               pt.wallet, pt.machine_id, pt.auto_start, pt.platform, pt.version, " +
+        "               pt.id as rig_config_id " +
+        "           FROM RigConfig pt " +
+        "           WHERE pt.deleted=0 ) " + this.rigConfigAlias();
+    return data;
+};
+
+
+
+exports.runBatchAlias = function() {
+    return "runba13";
+};
+
+exports.runBatchSelect = function() {
+    return " " + this.runBatchAlias()+".id, "+this.runBatchAlias()+".name, "
+        +this.runBatchAlias()+".platform, "+this.runBatchAlias()+".software, "
+        +this.runBatchAlias()+".coins_related, " +this.runBatchAlias()+".description, "
+        +this.runBatchAlias()+".bat_script, " +this.runBatchAlias()+".is_global ";
+};
+
+exports.runBatchFrom = function() {
+    var data =  " (SELECT rb.id, rb.name, rb.platform, rb.software, rb.coins_related, " +
+        "               rb.description, rb.bat_script, rb.is_global " +
+        "           FROM trRunBatch rb " +
+        "           WHERE rb.deleted=0 ) " + this.runBatchAlias();
+    return data;
+};
+
 exports.getEmail = function(token, callback) {
     var sql = "SELECT au.email " +
                 "FROM trAuthFrontEnd au " +
@@ -346,8 +388,8 @@ exports.insertRigEvent = function(event_code, message, idea, machine_id, card_or
 
 exports.insertRigConfig = function(email,name,auto_start,coins_related,pool_machine,wallet,machine_id,platform, callback) {
     var sql = "INSERT INTO trRigConfig(email, name, coins_related, pool, wallet" +
-        ", machine_id, auto_start, updated_at, created_at,platform) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?); ";
+        ", machine_id, auto_start, updated_at, created_at, platform) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
@@ -487,9 +529,11 @@ exports.getEventById = function(id, callback) {
 
 
 exports.getRigConfigWithMachine = function(machineID, email, platform, callback) {
-    var sql = "SELECT pt.email, pt.name, pt.coins_related, pt.pool, pt.wallet, pt.machine_id, pt.auto_start, pt.platform, pt.version " +
-        "FROM trRigConfig pt " +
-        "WHERE pt.machine_id=? AND pt.deleted=0 AND pt.email=? AND pt.platform=?";
+    var sql = "SELECT "+this.rigConfigSelect()+" " +
+        "FROM "+this.rigConfigFrom()+" " +
+        "WHERE "+this.rigConfigAlias()+".machine_id = ? " +
+        "   AND "+this.rigConfigAlias()+".email = ? " +
+        "   AND "+this.rigConfigAlias()+".platform = ? ";
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
@@ -977,7 +1021,10 @@ exports.getSocketMinerInfo = function(email, machineID,  callback) {
 exports.authorizeRigMachineToken = function(token,  callback) {
 
 
-    var selectSql = "SELECT COUNT(*) as count FROM  trAuthRig WHERE token = ? AND deleted=0";
+    var selectSql = "SELECT COUNT(ar.*) as count, ar.email " +
+        "FROM  trAuthRig ar " +
+        "WHERE ar.token = ? " +
+        "   AND ar.deleted=0 ";
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
@@ -1575,8 +1622,10 @@ exports.countMinerMachine = function(email,callback) {
 };
 
 exports.validateAuthFrontEndToken = function(token,callback) {
-    var sql = "Select COUNT(*) as count FROM trAuthWebFrontEnd " +
-        "WHERE token=? AND deleted=0";
+    var sql = "Select COUNT(aw.*) as count, aw.email " +
+        "FROM trAuthWebFrontEnd aw " +
+        "WHERE aw.token=? " +
+        "   AND aw.deleted=0 ";
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
@@ -1607,9 +1656,12 @@ exports.getRunBatchByPlatform = function(platform, callback) {
 };
 
 exports.getRunBatchByPlatformAndEmail = function(platform,email, callback) {
-    var sql = "SELECT rb.id,rb.name,rb.platform, rb.software, rb.coins_related, rb.description, rb.bat_script, rb.is_global  " +
-        "FROM trRunBatch rb " +
-        "WHERE rb.platform=? and rb.deleted=0 and (rb.email=? or rb.is_global=1) ORDER BY rb.coins_related";
+    var sql = "SELECT "+this.runBatchSelect()+" " +
+        "FROM "+this.runBatchFrom()+" " +
+        "WHERE "+this.runBatchAlias()+".platform=? " +
+        "   and ("+this.runBatchAlias()+".email=? " +
+        "       OR "+this.runBatchAlias()+".is_global=1) " +
+        "ORDER BY "+this.runBatchAlias()+".coins_related ";
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
@@ -1767,10 +1819,11 @@ exports.countMinerConfigByBatchId = function(batch_id,callback) {
 };
 
 
+
 exports.getMinerConfigByRowId = function(row_id,callback) {
-    var sql = "SELECT * " +
-        "FROM trRigConfig " +
-        "WHERE id=?";
+    var sql = "SELECT "+this.rigConfigSelect()+" " +
+        "FROM "+this.rigConfigFrom()+" " +
+        "WHERE "+this.rigConfigAlias()+".rig_config_id = ? ";
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
         if(err) { console.log(err); callback(true); return; }
