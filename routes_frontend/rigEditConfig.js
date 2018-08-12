@@ -136,7 +136,6 @@ router.post('/run', function (req, res) {
     console.log("SAVE RIG CONFIG!");
 
     var obj = JSON.parse(req.body.data);
-    var id = obj.id;
     var email = obj.email;
     var name = obj.name;
     var coin_name = obj.coin_name;
@@ -146,7 +145,7 @@ router.post('/run', function (req, res) {
     var platform = obj.platform;
     var auto_start = obj.auto_start;
     console.log(req.body.data);
-    db.updateMinerCofigByRowId(id, email, name, coin_name, pool, wallet, platform, auto_start, function (e, result) {
+    db.updateMinerCofig(machineId, email, name, coin_name, pool, wallet, platform, auto_start, function (e, result) {
         if (e) {
             console.log(e);
             return;
