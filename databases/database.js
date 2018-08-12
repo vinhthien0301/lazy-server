@@ -47,12 +47,13 @@ exports.runBatchSelect = function() {
     return " " + this.runBatchAlias()+".id, "+this.runBatchAlias()+".name, "
         +this.runBatchAlias()+".platform, "+this.runBatchAlias()+".software, "
         +this.runBatchAlias()+".coins_related, " +this.runBatchAlias()+".description, "
-        +this.runBatchAlias()+".bat_script, " +this.runBatchAlias()+".is_global ";
+        +this.runBatchAlias()+".bat_script, " +this.runBatchAlias()+".is_global, " +
+        +this.runBatchAlias()+".email ";
 };
 
 exports.runBatchFrom = function() {
     var data =  " (SELECT rb.id, rb.name, rb.platform, rb.software, rb.coins_related, " +
-        "               rb.description, rb.bat_script, rb.is_global " +
+        "               rb.description, rb.bat_script, rb.is_global, rb.email " +
         "           FROM trRunBatch rb " +
         "           WHERE rb.deleted=0 ) " + this.runBatchAlias();
     return data;
