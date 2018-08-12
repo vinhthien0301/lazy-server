@@ -1622,7 +1622,7 @@ exports.countMinerMachine = function(email,callback) {
 };
 
 exports.validateAuthFrontEndToken = function(token,callback) {
-    var sql = "Select COUNT(aw.*) as count, aw.email " +
+    var sql = "Select COUNT(*) as count, aw.email " +
         "FROM trAuthWebFrontEnd aw " +
         "WHERE aw.token=? " +
         "   AND aw.deleted=0 ";
