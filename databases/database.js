@@ -1021,7 +1021,7 @@ exports.getSocketMinerInfo = function(email, machineID,  callback) {
 exports.authorizeRigMachineToken = function(token,  callback) {
 
 
-    var selectSql = "SELECT COUNT(ar.*) as count, ar.email " +
+    var selectSql = "SELECT COUNT(*) as count, ar.email " +
         "FROM  trAuthRig ar " +
         "WHERE ar.token = ? " +
         "   AND ar.deleted=0 ";
