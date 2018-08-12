@@ -133,6 +133,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/run', function (req, res) {
+    console.log("SAVE RIG CONFIG!");
 
     var obj = JSON.parse(req.body.data);
     var id = obj.id;
