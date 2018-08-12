@@ -32,7 +32,7 @@ exports.rigConfigFrom = function() {
     var data =  " (SELECT pt.email, pt.name, pt.coins_related, pt.pool, " +
         "               pt.wallet, pt.machine_id, pt.auto_start, pt.platform, pt.version, " +
         "               pt.id as rig_config_id " +
-        "           FROM RigConfig pt " +
+        "           FROM trRigConfig pt " +
         "           WHERE pt.deleted=0 ) " + this.rigConfigAlias();
     return data;
 };
