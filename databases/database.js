@@ -1951,7 +1951,7 @@ exports.updateMinerCofig = function(machine_id,email,name,coin_name,mining_pool,
         "WHERE email=? " +
         "   AND platform=? " +
         "   AND machine_id=? " +
-        "   AND delete=0; ";
+        "   AND deleted=0; ";
 
     // get a connection from the pool
     pool.getConnection(function(err, connection) {
