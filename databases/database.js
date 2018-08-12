@@ -1945,7 +1945,7 @@ exports.removeRigConfigById = function(id, callback) {
     });
 };
 
-exports.updateMinerCofig = function(machine_id,email,name,coin_name,pool,wallet,platform,auto_start, callback) {
+exports.updateMinerCofig = function(machine_id,email,name,coin_name,mining_pool,wallet,platform,auto_start, callback) {
     var sql = "UPDATE trRigConfig " +
         "SET name=?,coins_related=?,pool=?,wallet=?,auto_start=?,updated_at=? " +
         "WHERE email=? " +
@@ -1953,17 +1953,13 @@ exports.updateMinerCofig = function(machine_id,email,name,coin_name,pool,wallet,
         "   AND machine_id=? " +
         "   AND delete=0; ";
 
-    console.log(sql);
     // get a connection from the pool
-    console.log(222211);
     pool.getConnection(function(err, connection) {
-        console.log(221122);
         if(err) { console.log(err); callback(true); return; }
         // make the query
         var now = api.getNow();
 
-        console.log(774411344111);
-        connection.query(sql, [name,coin_name,pool,wallet,auto_start,now,email,platform,machine_id], function(err, results) {
+        connection.query(sql, [name,coin_name,mining_pool,wallet,auto_start,now,email,platform,machine_id], function(err, results) {
             connection.release();
             if(err) { console.log(err); callback(true); return; }
             callback(false, results);
