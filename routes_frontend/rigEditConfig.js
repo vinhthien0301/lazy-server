@@ -145,6 +145,7 @@ router.post('/run', function (req, res) {
     var platform = obj.platform;
     var auto_start = obj.auto_start;
     console.log(req.body.data);
+    console.log(2222);
     db.updateMinerCofig(machineId, email, name, coin_name, pool, wallet, platform, auto_start, function (e, result) {
         console.log(774411111133);
         if (e) {

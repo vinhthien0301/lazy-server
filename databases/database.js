@@ -1954,7 +1954,9 @@ exports.updateMinerCofig = function(machine_id,email,name,coin_name,pool,wallet,
         "   AND delete=0 ";
 
     // get a connection from the pool
+    console.log(222211);
     pool.getConnection(function(err, connection) {
+        console.log(221122);
         if(err) { console.log(err); callback(true); return; }
         // make the query
         var now = api.getNow();
