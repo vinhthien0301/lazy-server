@@ -128,58 +128,6 @@ function deleteCoin() {
 
 }
 
-function updateMachine() {
-    var id = globalData.id;
-    var email = globalData.email;
-    var name = document.getElementById("name").value;
-    var e = document.getElementById("select-coin");
-    var coin_name_temp = e.options[e.selectedIndex].value;
-    var coin_name = coin_name_temp;
-    var pool = document.getElementById("pool").value;
-    var wallet = document.getElementById("wallet").value;
-    var machineId = globalData.machine_id;
-    var platform = globalData.platform;
-    var checked = document.getElementById("auto").checked;
-    var auto_start = 0;
-    if(checked){
-        auto_start = 1;
-    }
-
-    $.ajax({
-        url: "/rigEditConfig",
-        type: "post", //send it through get method
-        data: {
-            action: "update_machine",
-            data: JSON.stringify({
-                id: id,
-                email: email,
-                name: name,
-                coin_name: coin_name,
-                pool: pool,
-                wallet: wallet,
-                machineId: machineId,
-                platform: platform,
-                auto_start: auto_start
-            })
-        },
-        success: function (response) {
-            //Do Something
-            if(response.response_code == ERRO_NOT_FOUND){
-                alert(response.description);
-            }else{
-                alert("thành công");
-            }
-            return false;
-
-        },
-        error: function (xhr) {
-            //Do Something to handle error
-            alert("lỗi");
-        }
-    });
-
-}
-
 function updateAndRunMachine() {
     var id = globalData.id;
     var email = globalData.email;

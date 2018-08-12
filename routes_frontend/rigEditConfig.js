@@ -219,58 +219,6 @@ router.post('/', function (req, res) {
                 }
             });
             break;
-        case "update_machine":
-            var obj = JSON.parse(req.body.data);
-            var id = obj.id;
-            var email = obj.email;
-            var name = obj.name;
-            var coin_name = obj.coin_name;
-            var pool = obj.pool;
-            var wallet = obj.wallet;
-            var machineId = obj.machineId;
-            var platform = obj.platform;
-            var auto_start = obj.auto_start;
-            console.log(req.body.data);
-            db.updateMinerCofigByRowId(id, email, name, coin_name, pool, wallet, platform, auto_start, function (e, result) {
-                if (e) {
-                    console.log(e);
-                    return;
-
-                }
-                if (result) {
-                    db.getSocketMinerInfoByMachineId(machineId, function (e1, sockets) {
-                        if (e1) {
-                            console.log(e1);
-                            return;
-                        }
-
-                        if (sockets && sockets.length > 0) {
-                            for (var index = 0; index < sockets.length; index++) {
-                                var socket_id = sockets[index].socket_id;
-                                var socket = req.app.get('socket');
-                                if (socket.nsp.sockets && socket.nsp.sockets[socket_id]) {
-                                    socket.nsp.sockets[socket_id].emit('update_config', {
-                                        machineId: machineId,
-                                        name: name,
-                                        coins_related: coin_name,
-                                        pool: pool,
-                                        wallet: wallet,
-                                        platform: platform,
-                                        auto_start: auto_start
-                                    });
-                                }
-                            }
-
-                            res.json(api.getResponse(api.SUCC_EXEC));
-                        } else {
-                            res.json(api.getResponse(api.ERRO_NOT_FOUND, null, "không tìm thấy machine id"));
-                        }
-                    });
-
-                }
-            });
-
-            break;
         case "get_downloadlink":
             db.getAllDownloadLink(function (e, results) {
                 res.json(api.getResponse("succ", results));
