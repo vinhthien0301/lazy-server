@@ -47,7 +47,7 @@ exports.runBatchSelect = function() {
     return " " + this.runBatchAlias()+".id, "+this.runBatchAlias()+".name, "
         +this.runBatchAlias()+".platform, "+this.runBatchAlias()+".software, "
         +this.runBatchAlias()+".coins_related, " +this.runBatchAlias()+".description, "
-        +this.runBatchAlias()+".bat_script, " +this.runBatchAlias()+".is_global, " +
+        +this.runBatchAlias()+".bat_script, " +this.runBatchAlias()+".is_global, "
         +this.runBatchAlias()+".email ";
 };
 
