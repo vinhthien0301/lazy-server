@@ -152,12 +152,16 @@ router.post('/run', function (req, res) {
 
         }
         if (result) {
+            console.log(7744);
+            console.log(result);
             db.getSocketMinerInfoByMachineId(machineId, function (e1, sockets) {
                 if (e1) {
                     console.log(e1);
                     return;
                 }
 
+                console.log(666);
+                console.log(sockets);
                 if (sockets && sockets.length > 0) {
                     for (var index = 0; index < sockets.length; index++) {
                         var socket_id = sockets[index].socket_id;
@@ -177,6 +181,7 @@ router.post('/run', function (req, res) {
 
                     res.json(api.getResponse(api.SUCC_EXEC));
                 } else {
+                    console.log(666222);
                     res.json(api.getResponse(api.ERRO_NOT_FOUND, null, "không tìm thấy machine id"));
                 }
             });
